@@ -1,4 +1,5 @@
 
+
 # -*- coding: utf-8 -*-
 
 """
@@ -6,259 +7,89 @@ Created on Wed Jul 26 13:18:20 2017
 @author: Elpida Bantra
 """
 
-import sys
 import pygit2
 import re
 import string
+import pygit2
 import subprocess
-import os
+import re
+from collections import Counter
 import pandas as pd
+import sys
+import os
 import tokenize
 import io
-from collections import Counter
 
 
 
-# the first thing that we have to do is to print in a file with the name
-# commit_details.txt the repository details: the names of the authors by 
-# commenting order and the number of the corresponing commit, we just have 
-# to give the name of the repository that we 
-# want to examine in the line 19
+    
+repo = pygit2.Repository('/Users/elpidabantra/Desktop/quilt')
+print(repo.path)
+print(repo.workdir)
 
+print("\n")
 
-repository_path = '/Users/elpidabantra/Desktop/tacotron'
-
-fc = open("commit_details.txt", 'w')
-sys.stdout = fc
-
-
-repo = pygit2.Repository(repository_path)
-
-
-kr = subprocess.Popen('git log --author --oneline --shortstat',shell='False') #can be used to run the commandline command
-print(kr)
 commit = repo[repo.head.target]
-commit.message
-
-last = repo[repo.head.target]
-for commit in repo.walk(last.id, pygit2.GIT_SORT_TIME):
-    print("The commit message is",commit.message)
-    print(commit.commit_time)
-    print("Committed by",commit.author.name, commit.author.email)
-    print("\n")
-
-
-
-fc.close()
-
-
-
-# the next step of our code is to write a file with name 
-# commit_by_author.txt, which includes only the names of the authors by
-# commiting order  
-
-
-
-
-
-
-
-fc = open("commit_by_author.txt", 'w')
-sys.stdout = fc
-
-
-repo = pygit2.Repository(repository_path)
-
-kr = subprocess.Popen('git log --author --oneline --shortstat',shell='False') #can be used to run the commandline command
-commit = repo[repo.head.target]
-commit.message
-
-last = repo[repo.head.target]
-
-
-for commit in repo.walk(last.id, pygit2.GIT_SORT_TIME):
-    print(commit.author.name)
-
-
-fc.close()
-
-# the next step of our code is to write a file noa (number_of_authors)
-# and print there the list of authors and the length of this list
-
-
-
-fn = open("number_of_authors.txt", 'w')
-sys.stdout = fn
-
-
-list_of_authors = []
-
-
-
-
-with open('commit_by_author.txt') as f:
-	for word in f:
-		if word not in list_of_authors:
-			list_of_authors.append(word)
-
-for i in list_of_authors:
-	print(i)
-
-print(list_of_authors)
-
-
-f.close()
-
-
-fn.close()
-
-
-
-# After this we open the initial commit details file and
-# with text analysis we create a file with name commits_number_by_order.txt
-# in which are included two lists. The first one gives the numbers of the commits
-# and the second one the corresponding authors.
-# now we want to create equal to the numer of the authors lists and fill 
-# them with the commit numbers of the author
-
-
-
-
-list_of_contributors = []
-list_of_commits = []
-
-document_text = open('commit_details.txt', 'r')
-text_string = document_text.read().lower()
-text_string = str(text_string)
-match_pattern1 = re.findall(r'\b[0-9A-Fa-f]{10,12}\b', text_string)
-match_pattern2 = re.findall(r'\b[a-z]{10,12}\b', text_string)
-counter = 0
-words = text_string.split()
-for i,w in enumerate(words):
-    if w == "committed":
-        list_of_contributors.append(words[i+2])
-
-
-for word in match_pattern1:
-    list_of_commits.append(word)
-    counter = counter +1
-document_text.close()
-
-f1 = open("commits_number_by_order.txt", 'w')
-sys.stdout = f1  
-
-print(list_of_commits)
-print(list_of_contributors)
-
-        
-f1.close()
-
-
-
-
-
-
-
-
-
-
-
-####################################     ##########################
-
-
-# function to remove the comments from the source code files in order to do
-# text analysis on them
-
-
-"""
-def remove_all_comments(text_string):
-    prev_toktype = tokenize.INDENT
-    last_lineno = -1
-    last_col = 0
-    io_obj = io.StringIO(text_string)
-    out = ""
-    for tok in tokenize.generate_tokens(io_obj.readline):
-        token_type = tok[0]
-        token_string = tok[1]
-        start_line, start_col = tok[2]
-        end_line, end_col = tok[3]
-        ltext = tok[4]
-        if start_line > last_lineno:
-            last_col = 0
-        if start_col > last_col:
-            out += (" " * (start_col - last_col))
-        if token_type == tokenize.COMMENT:
-            pass
-        elif token_type == tokenize.STRING:
-            if prev_toktype != tokenize.INDENT:
-                if prev_toktype != tokenize.NEWLINE:
-                    if start_col > 0:
-                        out += token_string
-        else:
-            out += token_string
-        prev_toktype = token_type
-        last_col = end_col
-        last_lineno = end_line
-    return out
-"""
-
-f13test = open("testaki.txt", 'w')
-sys.stdout = f13test
-
-print(list_of_authors)
-
-f13test.close()
-
-
-
-
-
-repo = pygit2.Repository(repository_path)
+name_a=[]
 commit_list=[]
 last = repo[repo.head.target]
-
-f1 = open("lists_of_commit_numbers.txt", 'w')
-sys.stdout = f1
-
-for kk in range(0,len(list_of_authors)):
-	count = 0
-
-	with open('commit_by_author.txt') as f2:
-		list_of_commits_numbers = []
-		for word in f2:
-			count += 1
-			if word == list_of_authors[kk]:
-				list_of_commits_numbers.append(count)
-		#print(list_of_authors[kk])
-		#print(list_of_commits_numbers)
-		for commit in repo.walk(last.id, pygit2.GIT_SORT_TIME):
-			commit_list.append(commit.tree_id.hex)
-		for i in list_of_commits_numbers:
-			subprocess.Popen('git diff HEAD %s' %commit_list[i-1],shell='True',cwd=repository_path,stdout=open(str(list_of_authors[kk])+".txt", 'w'))
-			#f3 = open(str(list_of_authors[kk])+"_without_comments.txt", 'w')
-			#sys.stdout = f3
-			#document_text = open(str(list_of_authors[kk])+".txt", 'r')
-			#text_string = str(document_text.read().lower())
-			#print(remove_all_comments(text_string))
+emaila=[]
+email_u=[]
+data=[]
+email=[]
+cid=[]
+author=[]
+author_name=[]
 
 
 
-	f2.close()
+imported_items = []
 
 
-			
-
-#f3.close()
-
-
-			
-
-f1.close()
-
+for commit in repo.walk(last.id, pygit2.GIT_SORT_TIME):
+    
+    author_name.append(commit.author.name) #get the commit author name
+    emaila.append(commit.author.email) #get the commit author email
+    name_a = list(set(author_name)) #create a new list containing only unique author names
+    commit_list.append(commit.tree_id.hex)#commit ids
+    email_u=list(set(emaila))#list containing unique email ids
 
 
+log_list = pd.DataFrame(
+    {'author name': author_name,
+     'email id': emaila,
+     'commit id': commit_list
+    })
+    
+function_written=[]
+function_edited=[]
+import_written=[]
+import_edited=[]
+author_edit=[]
+author_write=[]
 
-########## TEXT ANALYSIS #######
+class_written=[]
+class_edited=[]
+author_clsse=[]
+author_clssw=[]
+
+author_imp_edited = []
+author_imp_write=[]
+
+
+for index, row in log_list[::-1].iterrows():
+       item=row['email id']
+       for emailid in email_u:
+           if emailid == item:
+               commit_id=row['commit id']
+               diff=repo.diff(commit_id)
+               with open("finalgitdiffpatchforpythonrepository2.txt", "a") as f:
+                  # print("\n author name",row['author name'],file=f)
+                   print("\n commit id",row['commit id'], file=f)
+                   print("\n emailid",row['email id'],file=f)
+                   print("\n",diff.patch,file=f) #generates diff pacth from the diff object obtained from pygit2 and this output is saved in text file, otherwise it takes too long to save it in memory.
+                   print("\n **********************************************************************NEW DIFF ********************************************************",file=f)
+ 
 
 denominator_ratio1 = 0
 
@@ -268,147 +99,13 @@ denominator_ratio3 = 0
 
 numerator_list3 = []
 
-
-for kk in range(0,len(list_of_authors)):
-
-	author = str(list_of_authors[kk])
-
-	
-
-	list_of_functions = []
-	list_of_classes = []
-	imported_items=[]
-
-	count_imports = {}
-	count_different_imports = {}
-	count_functions = {}
-	count_different_functions = {}
-	count_classes = {}
-	count_different_classes = {}
-
-	count_imports[author] = 0
-	count_functions[author] = 0
-	count_different_functions[author] = 0
-	count_classes[author] = 0
-	count_different_classes[author] = 0
-	count_different_imports[author] = 0
+list_of_authors = []
 
 
 
-
-
-	with open(str(list_of_authors[kk])+".txt", 'r') as ft:
-
-		for line in ft:
-			line = str(line)
-			if "+def " in line:
-				if line.split("def") in list_of_functions:
-					count_functions[author] = count_functions[author] + 1
-				else:
-					count_functions[author] = count_functions[author] + 1
-					count_different_functions[author] = count_different_functions[author] + 1
-					list_of_functions.append(line.split("def"))
-			if "+class " in line:
-				if line.split("class") in list_of_classes:
-					count_classes[author] = count_classes[author] + 1
-				else:
-					list_of_classes.append(line.split("class"))
-					count_classes[author] = count_classes[author] + 1
-					count_different_classes[author] = count_different_classes[author] + 1
-
-	
-
-	with open(str(list_of_authors[kk])+".txt", 'r') as document_text:
-		text_string = str(document_text.read().lower())
-		words = text_string.split()
-		for i,w in enumerate(words):
-			if w == "+from " or w=="+import ":
-				if words[i+1] in imported_items:
-					count_imports[author] = count_imports[author] + 1
-				else:
-					imported_items.append(words[i+1])
-					count_imports[author] = count_imports[author] + 1
-					count_different_imports[author] = count_different_imports[author] + 1
-
-	
-
-	ff = open(str(list_of_authors[kk])+"source_code_analysis1.txt", 'w')
-	sys.stdout = ff
-
-
-
-
-	print("the number of functions for the given author is given in the below line")
-	print(count_functions[author])
-			#print("the functions that he wrote are given in the list below")
-			#print(list_of_functions)
-	print("the number of imports by the given author is given in the below line")
-	print(count_imports[author])
-			#print("the imported items are given below")
-			#print(imported_items)
-	print("the number of classes by the given author is given in the below line")
-	print(count_classes[author])
-			#print("the names of the classes are given below")
-			#print(list_of_classes)
-
-	print("the total numerator of this ratio is")
-	print(int(count_functions[author])+int(count_imports[author])+int(count_classes[author]))
-
-	numerator_list1.append(int(count_functions[author])+int(count_imports[author])+int(count_classes[author]))
-	denominator_ratio1 = denominator_ratio1 + int(count_functions[author])+int(count_imports[author])+int(count_classes[author])
-	
-
-	ff.close()
-
-
-
-	ff3 = open(str(list_of_authors[kk])+"source_code_analysis3.txt", 'w')
-	sys.stdout = ff3
-
-
-	print("the number of functions for the given author is given in the below line")
-	print(count_different_functions[author])
-	print("the functions that he wrote are given in the list below")
-	print(list_of_functions)
-	print("the number of imports by the given author is given in the below line")
-	print(count_different_imports[author])
-	print("the imported items are given below")
-	print(imported_items)
-	print("the number of classes by the given author is given in the below line")
-	print(count_different_classes[author])
-	print("the names of the classes are given below")
-	print(list_of_classes)
-	print("the total numerator of this ratio is")
-	print(int(count_different_functions[author])+int(count_different_imports[author])+int(count_different_classes[author]))
-
-	numerator_list3.append(int(count_different_functions[author])+int(count_different_imports[author])+int(count_different_classes[author]))
-	denominator_ratio3 = denominator_ratio3 + int(count_different_functions[author])+int(count_different_imports[author])+int(count_different_classes[author])
-	
-
-	ff3.close()
-
-
-
-
-ff = open("metric1_ratios.txt", 'w')
-sys.stdout = ff
-
-
-for i in range(0,len(numerator_list1)):
-	print(list_of_authors[i])
-	print(numerator_list1[i]/denominator_ratio1)
-
-ff.close()
-
-
-ff = open("metric3_ratios.txt", 'w')
-sys.stdout = ff
-
-
-for i in range(0,len(numerator_list3)):
-	print(list_of_authors[i])
-	print(numerator_list3[i]/denominator_ratio3)
-ff.close()
+for word in author_name:
+  if word not in list_of_authors:
+    list_of_authors.append(word)
 
 
 
@@ -417,3 +114,102 @@ ff.close()
 
 
 
+with open('finalgitdiffpatchforpythonrepository2.txt','r') as f:
+  for line in f:  
+         if 'emailid' in line:
+             k=line.split()
+             
+             email.append(k[-1])   
+         if "+import " in line:
+             sen=line.split()
+             imp=sen[1]
+             if imp in import_written:
+                 import_edited.append(imp)
+                 author_imp_edited.append(k[-1])
+
+             else:
+                 import_written.append(imp)
+                 author_imp_write.append(k[-1])
+
+         if "+def" in line:
+
+             sent=line.split()
+             func=sent[1]
+             if func in function_written:
+                 function_edited.append(func)
+                 author_edit.append(k[-1])
+             else:
+                 function_written.append(func)
+                 author_write.append(k[-1])
+
+         elif "+class" in line:
+             
+             sentence=line.split()
+             clss=sentence[1]
+             if clss in class_written:
+                 class_edited.append(clss)
+                 author_clsse.append(k[-1])
+             else:
+                 class_written.append(clss)
+                 author_clssw.append(k[-1])
+
+
+count1= Counter(author_write)
+ 
+count2=Counter(author_edit)
+ 
+count3=Counter(author_clssw)
+count4=Counter(author_clsse)
+
+count5=Counter(author_imp_write)
+count6=Counter(author_imp_edited)
+
+
+
+count1=dict(count1)
+count2=dict(count2)
+count3=dict(count3)
+count4=dict(count4)
+
+count5=dict(count5)
+count6=dict(count6)
+
+
+
+ff3 = open("ratios_metric1-3.txt", 'w')
+
+sys.stdout = ff3
+
+
+a = {k: v / total for total in (sum(count2.values()),) for k, v in count2.items()}
+
+b={l: m / total for total in (sum(count4.values()),) for l, m in count4.items()}
+
+c = {r: s / total for total in (sum(count6.values()),) for r, s in count6.items()}
+
+d={u: q / total for total in (sum(count1.values()),) for u, q in count1.items()}
+
+e = {r: s / total for total in (sum(count3.values()),) for r, s in count3.items()}
+
+f={u: q / total for total in (sum(count5.values()),) for u, q in count5.items()}
+# 
+print("\n The ratio of in total functions used by each contributor is:\n \t",a)
+# 
+print("\n The ratio of in total functions used by each contributor is:\n \t",b)
+# 
+print("\n The ratio of in total functions used by each contributor is::\n \t",c)
+#
+print("\n The ratio of different functions wriiten by each contributor is:\n \t",a)
+# 
+print("\n The ratio of different classes wriiten by each contributor is:\n \t",b)
+# 
+print("\n The ratio of different imports by each contributor is::\n \t",c)
+     
+
+
+
+ff3.close()
+
+
+
+  
