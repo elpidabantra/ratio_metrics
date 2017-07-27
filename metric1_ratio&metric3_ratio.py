@@ -199,9 +199,9 @@ print("\n The ratio of in total functions used by each contributor is:\n \t",b)
 # 
 print("\n The ratio of in total functions used by each contributor is::\n \t",c)
 #
-print("\n The ratio of different functions wriiten by each contributor is:\n \t",a)
+print("\n The ratio of different functions writen by each contributor is:\n \t",a)
 # 
-print("\n The ratio of different classes wriiten by each contributor is:\n \t",b)
+print("\n The ratio of different classes writen by each contributor is:\n \t",b)
 # 
 print("\n The ratio of different imports by each contributor is::\n \t",c)
      
