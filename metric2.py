@@ -6,7 +6,7 @@ Created on Thu Jul  6 20:51:07 2017
 """
 
 import re
-
+import subprocess
 
 data=[]
 list1=[]
@@ -17,7 +17,8 @@ ins=[]
 delt=[]
 
 
-with open('C:/Users/Madhura Kashikar/Desktop/file2.txt','r') as f:
+
+with open('C:/Users/Madhura Kashikar/Desktop/logfile.txt','r') as f:
     for line in f:
          if re.match('[a-z0-9]+', line) is not None:
              data=line.split()
