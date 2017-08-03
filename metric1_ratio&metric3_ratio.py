@@ -87,7 +87,7 @@ for index, row in log_list[::-1].iterrows():
            if emailid == item:
                commit_id = row['commit id']
                diff = repo.diff(commit_id)
-               with open("finalgitdiffpatchforpythonrepository2.txt", "a") as f:
+               with open('repository.txt', "a") as f:
                   # print("\n author name",row['author name'],file=f)
                    print("\n commit id",row['commit id'], file = f)
                    print("\n emailid",row['email id'],file = f)
