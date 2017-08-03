@@ -24,9 +24,16 @@ import tokenize
 import io
 
 
+The_Path = '/Users/elpidabantra/Desktop/quilt'
+
+
+
+
+
+
 
     
-repo = pygit2.Repository('/Users/elpidabantra/Desktop/quilt')
+repo = pygit2.Repository(The_Path)
 print(repo.path)
 print(repo.workdir)
 
