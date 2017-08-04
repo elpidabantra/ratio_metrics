@@ -64,18 +64,18 @@ author_imp_write =[]
 
 
 #==============================================================================
-# for index, row in log_list[::-1].iterrows():
-#        item = row['email id']
-#        for emailid in email_u:
-#            if emailid == item:
-#                commit_id = row['commit id']
-#                diff = repo.diff(commit_id)
-#                with open("C:/Users/Madhura Kashikar/Desktop/Business Analytics/metric4/numpy1.txt", "a") as f:
-#                   # print("\n author name",row['author name'],file=f)
-#                    print("\n commit id",row['commit id'], file = f)
-#                    print("\n emailid",row['email id'],file = f)
-#                    print("\n",diff.patch,file = f) #generates diff pacth from the diff object obtained from pygit2 and this output is saved in text file, otherwise it takes too long to save it in memory.
-#                    print("\n **********************************************************************NEW DIFF ********************************************************",file=f)
+for index, row in log_list[::-1].iterrows():
+        item = row['email id']
+        for emailid in email_u:
+            if emailid == item:
+                commit_id = row['commit id']
+                diff = repo.diff(commit_id)
+                with open("C:/Users/Madhura Kashikar/Desktop/Business Analytics/metric4/numpy1.txt", "a") as f:
+                   # print("\n author name",row['author name'],file=f)
+                    print("\n commit id",row['commit id'], file = f)
+                    print("\n emailid",row['email id'],file = f)
+                    print("\n",diff.patch,file = f) #generates diff pacth from the diff object obtained from pygit2 and this output is saved in text file, otherwise it takes too long to save it in memory.
+                    print("\n **********************************************************************NEW DIFF ********************************************************",file=f)
 #==============================================================================
  
 ############ Text Analysis  ##############
