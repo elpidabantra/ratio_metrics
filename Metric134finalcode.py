@@ -8,7 +8,7 @@ Created on Thu Aug  3 10:12:07 2017
 import pygit2
 from collections import Counter
 import pandas as pd
-import sys
+
 
 
 
