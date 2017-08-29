@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Aug  3 10:12:07 2017
 
-@author: Madhura Kashikar
 """
+Created on Wed Jun 26 13:18:20 2017
+@author: Elpida Bantra
+"""
+
 
 import pygit2
 from collections import Counter
