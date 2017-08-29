@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+
+"""
+Created on Wed Jun 26 13:18:20 2017
+@author: Elpida Bantra
+"""
 import sys
 import pygit2
 import re
