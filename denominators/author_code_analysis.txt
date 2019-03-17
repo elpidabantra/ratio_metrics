@@ -1,4 +1,4 @@
-number of functions for the given author is given in the below line
+the number of functions for the given author is given in the below line
 {'author': 6}
 the functions that he wrote are given in the list below
 [['  ', ' __init__( self, *args, **kwds ):\n'], ['  ', ' error( self, msg ):\n'], ['    ', ' __init__( self,\n'], ['    ', ' conflict_handler(self, *args, **kwds):\n'], ['    ', ' process_include_metrics(self, include_metrics_str):\n'], ['', ' testpa( pa ):\n']]
